@@ -41,6 +41,12 @@ class ShopifyAuthServiceProvider extends ServiceProvider
 		$router->aliasMiddleware('shopifyshopbilling', 'TheRealDb\ShopifyAuth\Http\Middleware\ShopifyShopCharge');
 		$router->aliasMiddleware('shopifyshopwebhook', 'TheRealDb\ShopifyAuth\Http\Middleware\ShopifyWebhook');
 
+        \Socialite::extend('shopify', function ($app) {
+            $config = $app['config']['services.shopify'];
+
+            return \Socialite::buildProvider('\SocialiteProviders\Shopify\Provider', $config);
+        });
+        
 		/* Register our event listener for Socialite */
 		Event::listen('\SocialiteProviders\Manager\SocialiteWasCalled::class', 'SocialiteProviders\\Shopify\\ShopifyExtendSocialite@handle');
 
