@@ -106,7 +106,7 @@ class AuthenticateController extends Controller
 	    }
 
         // Run any initialize jobs we want
-        $this->initializeJob();
+        $this->initializeJob($shop);
 
     	return redirect()->route('shopify.home');
     }
@@ -116,12 +116,8 @@ class AuthenticateController extends Controller
      *
      * @return boolean
      */
-    public function initializeJob()
+    public function initializeJob($shop)
     {
-        $domain = session()->get('shopify_domain');
-        $shop = \TheRealDb\ShopifyAuth\Http\Models\ShopifyShop::where('domain', $domain)
-            ->firstOrFail();
-
         $config = config('shopifyauth.initialize_jobs');
         
         if (!is_array($config)) {
