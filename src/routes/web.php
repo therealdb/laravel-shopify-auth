@@ -23,7 +23,8 @@ Route::group(['middleware' => ['web']], function () {
 
 	    $configDashboard = config('shopifyauth.views');
 	    if ($configDashboard && isset($configDashboard['dashboard'])) {
-	    	return view($configDashboard['dashboard']);
+	    	return view($configDashboard['dashboard'])
+	    		->with('shop', $shop);
 	    } else {
 			return view("shopify-auth::dashboard");
 		}
