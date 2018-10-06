@@ -1,0 +1,34 @@
+{
+    "name": "therealdb/shopify-auth",
+    "keywords": ["laravel", "shopify", "shopify-api", "api", "shopify oauth", "shopify boilerplate", "shopify auth laravel"],
+    "description": "oauth boilerplate for Shopify app development",
+    "type": "library",
+    "require": {
+        "php": ">=7.1.0",
+        "laravel/framework": "~5.5",
+        "laravel/socialite": "^3.1",
+        "doctrine/dbal": "~2.5",
+        "socialiteproviders/shopify": "~1.0",
+        "bnmetrics/laravel-shopify-api": "~1.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "therealdb",
+            "email": "hello@quantumapps.xyz"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "TheRealDb\\ShopifyAuth\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TheRealDb\\ShopifyAuth\\ShopifyAuthServiceProvider"
+            ]
+        }
+    }
+}
