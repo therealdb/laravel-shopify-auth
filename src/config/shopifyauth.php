@@ -66,5 +66,22 @@ return [
 			]
 			*/
 		]
+	],
+
+	/*
+    |--------------------------------------------------------------------------
+    | Initialization Jobs
+    |--------------------------------------------------------------------------
+    |
+    | These are jobs that need to be run once the user is authorized.
+    |
+    */
+	'initialize_jobs' => [
+		/*
+		[
+			'job' => '', // App\Jobs\MyJob::class
+			'dispatch' => false // false=run immediate | true=run as normal job
+		]
+		*/
 	]
 ];

@@ -105,6 +105,50 @@ class AuthenticateController extends Controller
 	    	ScripttagRegisterJob::dispatch($shop, $config);
 	    }
 
+        // Run any initialize jobs we want
+        $this->initializeJob();
+
     	return redirect()->route('shopify.home');
+    }
+
+    /**
+     * Run any subsequent jobs once the user has authenticated
+     *
+     * @return boolean
+     */
+    public function initializeJob()
+    {
+        $domain = session()->get('shopify_domain');
+        $shop = \TheRealDb\ShopifyAuth\Http\Models\ShopifyShop::where('domain', $domain)
+            ->firstOrFail();
+
+        $config = config('shopifyauth.initialize_jobs');
+        
+        if (!is_array($config)) {
+            // Our array isn't set up properly
+            return false;
+        }
+
+        $run = function($config) use ($shop) {
+            $job = new $config['job']($shop);
+            if (isset($config['dispatch']) && $config['dispatch'] === true) {
+                dispatch($job);
+            } else {
+                $job->handle();
+            }
+
+            return true;
+        };
+
+        if (count($config) > 0) {
+            foreach ($config as $job) {
+                $run($job);
+            }
+
+            return true;
+        }
+
+        // We didn't run into any jobs
+        return false;
     }
 }
