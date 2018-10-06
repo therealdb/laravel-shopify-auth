@@ -80,7 +80,7 @@ return [
 		/*
 		[
 			'job' => '', // App\Jobs\MyJob::class
-			'dispatch' => false // false=run immediate | true=run as normal job
+			'dispatch' => false // false=run immediately | true=run as normal job
 		]
 		*/
 	]
