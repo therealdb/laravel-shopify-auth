@@ -51,7 +51,7 @@ class ShopifyShopCharge
                 'return_url' => route('shopify.billing'),
             ];
 
-            if(\App::environment('local')) {
+            if(\App::environment('local') || env('SHOPIFY_BILLING_TEST', false)) {
                 $options['test'] = true;
             }
 
