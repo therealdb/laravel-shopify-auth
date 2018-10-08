@@ -8,6 +8,9 @@ use TheRealDb\ShopifyAuth\Http\Models\ShopifyShop;
 /* Traits */
 use TheRealDb\ShopifyAuth\Http\Traits\ShopifyAuthTrait;
 
+/* Jobs */
+use TheRealDb\ShopifyAuth\Jobs\ScripttagRegisterJob;
+
 class ShopifyShopAuth
 {
     use ShopifyAuthTrait;
@@ -39,6 +42,14 @@ class ShopifyShopAuth
             if (session()->has('shopify_domain') && !ShopifyShop::where('domain', session()->get('shopify_domain'))->first()) {
                 session()->forget('shopify_domain');
                 return redirect()->route('shopify.login');
+            }
+        }
+
+        if (session()->has('shopify_domain')) {
+            $shop = ShopifyShop::where('domain', session()->get('shopify_domain'))->first();
+            $config = config('shopifyauth.script_tags');
+            if (env('SHOPIFY_INSTALL_SCRIPTTAGS', true) && $config && ((isset($config['register']) && is_array($config['register']) && count($config['register']) > 0) || (isset($config['unregister']) && is_array($config['unregister']) && count($config['unregister']) > 0))) {
+                ScripttagRegisterJob::dispatch($shop, $config);
             }
         }
 

@@ -16,11 +16,6 @@ Route::group(['middleware' => ['web']], function () {
 		$shop = \TheRealDb\ShopifyAuth\Http\Models\ShopifyShop::where('domain', $domain)
 	    	->firstOrFail();
 
-		$config = config('shopifyauth.script_tags');
-    	if (env('SHOPIFY_INSTALL_SCRIPTTAGS', true) && $config && ((isset($config['register']) && is_array($config['register']) && count($config['register']) > 0) || (isset($config['unregister']) && is_array($config['unregister']) && count($config['unregister']) > 0))) {
-	    	\TheRealDb\ShopifyAuth\Jobs\ScripttagRegisterJob::dispatch($shop, $config);
-	    }
-
 	    $configDashboard = config('shopifyauth.views');
 	    if ($configDashboard && isset($configDashboard['dashboard'])) {
 	    	return view($configDashboard['dashboard'])
