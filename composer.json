@@ -9,7 +9,8 @@
         "laravel/socialite": "^3.1",
         "doctrine/dbal": "~2.5",
         "socialiteproviders/shopify": "~1.0",
-        "bnmetrics/laravel-shopify-api": "~1.0"
+        "bnmetrics/laravel-shopify-api": "~1.0",
+        "slince/shopify-api-php": "~2.1"
     },
     "license": "MIT",
     "authors": [
