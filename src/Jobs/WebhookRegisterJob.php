@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 use TheRealDb\ShopifyAuth\Http\Models\ShopifyShop;
-use Slince\Shopify\PrivateAppCredential;
+use Slince\Shopify\PublicAppCredential;
 use Slince\Shopify\Client;
 
 class WebhookRegisterJob implements ShouldQueue
