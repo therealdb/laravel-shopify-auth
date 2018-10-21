@@ -71,9 +71,9 @@ class UninstallJob implements ShouldQueue
 
             /* Soft Delete the shop */
             if ($this->force) {
-                $this->shop()->forceDelete();
+                $this->shop->forceDelete();
             } else {
-                $this->shop()->delete();
+                $this->shop->delete();
             }
 
             return true;
