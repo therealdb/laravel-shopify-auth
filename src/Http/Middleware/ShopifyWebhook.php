@@ -19,7 +19,7 @@ class ShopifyWebhook
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next)
     {
         $hmac = request()->header('x-shopify-hmac-sha256') ?: '';
         $shop = request()->header('x-shopify-shop-domain');
