@@ -59,7 +59,7 @@ class UninstallJob implements ShouldQueue
         if ($this->shop) {
 
             /* Remove token from shop */
-            $this->shop->shopify_token = null;
+            $this->shop->token = null;
             $this->shop->save();
 
             /* Cancel any subscriptions */
