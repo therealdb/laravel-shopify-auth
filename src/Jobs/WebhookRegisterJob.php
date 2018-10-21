@@ -9,8 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 use TheRealDb\ShopifyAuth\Http\Models\ShopifyShop;
-use Slince\Shopify\PublicAppCredential;
-use Slince\Shopify\Client;
 
 class WebhookRegisterJob implements ShouldQueue
 {
@@ -44,8 +42,8 @@ class WebhookRegisterJob implements ShouldQueue
      */
     public function handle()
     {
-        $credential = new PublicAppCredential($this->shop->token);
-        $client  = new Client($credential, $this->shop->domain, [
+        $credential = new \Slince\Shopify\PublicAppCredential($this->shop->token);
+        $client  = new \Slince\Shopify\Client($credential, $this->shop->domain, [
             'metaCacheDir' => './tmp' // Metadata cache dir, required
         ]);
 
