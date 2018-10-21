@@ -137,7 +137,9 @@ Route::group(['middleware' => ['web']], function () {
             ->with('url', $request->input('redirectUrl'));
     })
     ->name('shopify.billing_redirect');;
+});
 
+Route::group(['middleware' => ['api']], function () {
     /*
     |--------------------------------------------------------------------------
     | Uninstall Webhook Handler
