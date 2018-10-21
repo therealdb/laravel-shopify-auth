@@ -83,5 +83,23 @@ return [
 			'dispatch' => false // false=run immediately | true=run as normal job
 		]
 		*/
+	],
+
+	/*
+    |--------------------------------------------------------------------------
+    | Webhooks
+    |--------------------------------------------------------------------------
+    |
+    | This will install webhooks for your app. The uninstall webhook is 
+    | is pre-configured to work at /webhook/uninstall out of the box.
+    |
+    */
+	'webhooks' => [
+		/*
+		[
+			'topic' => 'app/uninstalled',
+			'address' => 'https://example.com/webhook/uninstall'
+		]
+		*/
 	]
 ];

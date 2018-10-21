@@ -105,6 +105,11 @@ class AuthenticateController extends Controller
 	    	ScripttagRegisterJob::dispatch($shop, $config);
 	    }
 
+        $webhooks = config('shopifyauth.webhooks');
+        if ($webhooks && is_array($webhooks) && count($webhooks) > 0) {
+            WebhookRegisterJob::dispatch($shop, $webhooks);
+        }
+
         // Run any initialize jobs we want
         $this->initializeJob($shop);
 
