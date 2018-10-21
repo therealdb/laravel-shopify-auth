@@ -32,7 +32,10 @@ class ShopifyShopAuth
             /* Forget our current shopify domain session */
             session()->put('shopify_domain', $request->input('shop'));
 
-            if (!$request->has('code') && !$request->has('hmac')) {
+            /* Check the shop exists */
+            $shop = ShopifyShop::where('domain', session()->get('shopify_domain'))->first();
+
+            if ((!$request->has('code') && !$request->has('hmac')) || (!$request->has('code') && $request->has('hmac') && !$shop)) {
                 /* Send the user to authenticate */
                 return redirect()->route('shopify.authenticate', ['shop' => $theDomain]);
             }
