@@ -19,6 +19,7 @@ use TheRealDb\ShopifyAuth\Http\Traits\ShopifyAuthTrait;
 
 /* Jobs */
 use TheRealDb\ShopifyAuth\Jobs\ScripttagRegisterJob;
+use TheRealDb\ShopifyAuth\Jobs\WebhookRegisterJob;
 
 class AuthenticateController extends Controller
 {
