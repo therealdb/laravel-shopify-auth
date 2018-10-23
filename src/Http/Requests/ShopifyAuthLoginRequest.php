@@ -24,7 +24,7 @@ class ShopifyAuthLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'shop' => 'required'
+            'shop' => 'required|regex:/^(.*)\.myshopify.com+$/i'
         ];
     }
 
@@ -36,7 +36,8 @@ class ShopifyAuthLoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'shop.required' => 'You must enter your domain to install the app.'
+            'shop.required' => 'You must enter your domain to install the app.',
+            'shop.regex' => 'You must use your shopify admin URL. (i.e. your-store.myshopify.com)'
         ];
     }
 }
