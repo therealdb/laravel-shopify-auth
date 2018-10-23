@@ -98,6 +98,10 @@ class AuthenticateController extends Controller
     		$shop->restore();
     	}
 
+        if (isset($user->user['email']) && $user->user['email'] != "") {
+            $shop->shop_email = $user->user['email'];
+        }
+
     	$shop->token = $user->token;
     	$shop->save();
 
