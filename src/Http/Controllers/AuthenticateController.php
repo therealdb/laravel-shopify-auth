@@ -92,7 +92,7 @@ class AuthenticateController extends Controller
     	$user = Socialite::with('shopify')->user();
 
     	$shop = ShopifyShop::withTrashed()
-    		->firstOrCreate(['domain' => $user->user['domain']]);
+    		->firstOrCreate(['domain' => $user->user['myshopify_domain']]);
 
     	if ($shop->trashed()) {
     		$shop->restore();
