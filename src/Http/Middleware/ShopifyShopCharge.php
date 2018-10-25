@@ -5,6 +5,7 @@ namespace TheRealDb\ShopifyAuth\Http\Middleware;
 use Closure;
 use Shopify;
 use ShopifyBilling;
+use \Carbon\Carbon;
 
 /* Models */
 use TheRealDb\ShopifyAuth\Http\Models\ShopifyShop;
@@ -50,6 +51,21 @@ class ShopifyShopCharge
                 'trial_days' => env('SHOPIFY_BILLING_TRIAL_DAYS', 7),
                 'return_url' => route('shopify.billing'),
             ];
+
+            if ($options['trial_days'] > 0) {
+                $subscriptions = $store->subscriptions()
+                    ->withTrashed()
+                    ->take(1)
+                    ->first();
+                if ($subscriptions) { 
+                    $now = Carbon::now();
+                    $subDate = 0;
+                    if ($now < $subscriptions->trial_ends_at) {
+                        $subDate = $subscriptions->trial_ends_at->diffInDays($now);
+                    }
+                    $options['trial_days'] = $subDate;
+                }
+            }
 
             if(\App::environment('local') || env('SHOPIFY_BILLING_TEST', false)) {
                 $options['test'] = true;
