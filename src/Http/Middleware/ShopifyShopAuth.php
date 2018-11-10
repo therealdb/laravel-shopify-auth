@@ -52,7 +52,15 @@ class ShopifyShopAuth
             $shop = ShopifyShop::where('domain', session()->get('shopify_domain'))->first();
             $config = config('shopifyauth.script_tags');
             if (env('SHOPIFY_INSTALL_SCRIPTTAGS', true) && $config && ((isset($config['register']) && is_array($config['register']) && count($config['register']) > 0) || (isset($config['unregister']) && is_array($config['unregister']) && count($config['unregister']) > 0))) {
-                ScripttagRegisterJob::dispatch($shop, $config);
+                try {
+                    ScripttagRegisterJob::dispatch($shop, $config);
+                } catch (\Exception $e) {
+                    if (isset($theDomain)) {
+                        return redirect()->route('shopify.authenticate', ['shop' => $theDomain]);
+                    } else {
+                        return redirect()->route('shopify.login');
+                    }
+                }
             }
         }
 
