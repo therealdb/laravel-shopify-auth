@@ -13,6 +13,20 @@ class CreateShopifyChargesTable extends Migration
      */
     public function up()
     {
+        Schema::create('shopify_plans', function (Blueprint $table) {
+            $table->increments('id');
+
+            $table->string('name');
+            $table->decimal('price', 6, 2)
+                ->default('0000.00');
+            $table->integer('trial_days')
+                ->default('0');
+            $table->boolean('active')
+                ->default(true);
+
+            $table->timestamps();
+        });
+
         Schema::create('shopify_charges', function (Blueprint $table) {
             $table->increments('id');
 
@@ -20,6 +34,7 @@ class CreateShopifyChargesTable extends Migration
             $table->string('charge_id');
             $table->string('name');
             $table->string('plan');
+            $table->string('plan_id');
             $table->string('test')
                 ->nullable();
             $table->integer('quantity');
@@ -33,6 +48,10 @@ class CreateShopifyChargesTable extends Migration
             $table->foreign('shopify_shop_id')
                 ->references('id')
                 ->on('shopify_shops');
+
+            $table->foreign('plan_id')
+                ->references('id')
+                ->on('shopify_plans');
         });
     }
 
@@ -43,6 +62,7 @@ class CreateShopifyChargesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('shopify_plans');
         Schema::dropIfExists('shopify_charges');
     }
 }
