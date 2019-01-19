@@ -59,7 +59,7 @@ class ShopifyShop extends Model
 	 */
 	public function subscribed($subscription = 'default', $plan = null)
 	{
-	    $subscription = $this->subscription($subscription);
+	    $subscription = $this->subscription($subscription, $plan);
 
 	    if (is_null($subscription)) {
 	        return false;
@@ -69,7 +69,7 @@ class ShopifyShop extends Model
 	        return $subscription->valid();
 	    }
 
-	    return $subscription->valid() && $subscription->plan === $plan;
+	    return $subscription->valid() && $subscription->plan_id === (int)$plan;
 	}
 
 	/**
@@ -78,13 +78,17 @@ class ShopifyShop extends Model
 	 * @param  string  $subscription
 	 * @return TheRealDb\ShopifyAuth\Http\Models\ShopifyCharge|null
 	 */
-	public function subscription($subscription = 'default')
+	public function subscription($subscription = 'default', $plan = null)
 	{
 	    return $this->subscriptions->sortByDesc(function ($value) {
 	        return $value->created_at->getTimestamp();
 	    })
-	    ->first(function ($value) use ($subscription) {
-	        return $value->name === $subscription;
+	    ->first(function ($value) use ($subscription, $plan) {
+	    	if ($plan !== null) {
+	    		return $value->name === $subscription && $value->plan_id === (int)$plan;
+	    	} else {
+		        return $value->name === $subscription;
+		    }
 	    });
 	}
 

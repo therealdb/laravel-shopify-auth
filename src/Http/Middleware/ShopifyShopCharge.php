@@ -9,6 +9,7 @@ use \Carbon\Carbon;
 
 /* Models */
 use TheRealDb\ShopifyAuth\Http\Models\ShopifyShop;
+use TheRealDb\ShopifyAuth\Http\Models\ShopifyPlan;
 
 /* Traits */
 use TheRealDb\ShopifyAuth\Http\Traits\ShopifyAuthTrait;
@@ -26,17 +27,21 @@ class ShopifyShopCharge
      */
     public function handle($request, Closure $next, $subscription = 'default', $plan = null)
     {
-        if (env('SHOPIFY_BILLING_ENABLED', false)) {
+        if (env('SHOPIFY_BILLING_ENABLED', false) && (!env('SHOPIFY_FREMIUM', false) || ($plan !== null && is_numeric($plan)))) {
             if (!session()->has('shopify_domain')) {
                 abort(403, 'Unauthorized action.');
             }
-
+            
             $domain = session()->get('shopify_domain');
             $store = ShopifyShop::where('domain', $domain)
                 ->firstOrFail();
 
             if ($this->subscribed($store, $subscription, $plan, func_num_args() === 2)) {
-                return $next($request);
+                if ($plan !== null) {
+                    return redirect()->route('shopify.home');
+                } else {
+                    return $next($request);
+                }
             }
 
             if($request->ajax() || $request->wantsJson()) {
@@ -45,10 +50,24 @@ class ShopifyShopCharge
 
             $shopify = Shopify::retrieve($store->domain, $store->token);
 
+            if ($plan !== null) {
+                $the_plan = ShopifyPlan::findOrFail($plan);
+
+                $plan_name = $the_plan->name;
+                $plan_price = $the_plan->price;
+                $trial_days = $the_plan->trial_days;
+            } else {
+                $the_plan = ShopifyPlan::findOrFail(env('SHOPIFY_DEFAULT_PLAN_ID', 0));
+
+                $plan_name = $the_plan->name;
+                $plan_price = $the_plan->price;
+                $trial_days = $the_plan->trial_days;
+            }
+
             $options = [
-                'name' => env('SHOPIFY_BILLING_PLAN', 'Basic'),
-                'price' => env('SHOPIFY_BILLING_PRICE', '5.00'),
-                'trial_days' => env('SHOPIFY_BILLING_TRIAL_DAYS', 7),
+                'name' => $plan_name,
+                'price' => $plan_price,
+                'trial_days' => $trial_days,
                 'return_url' => route('shopify.billing'),
             ];
 
