@@ -69,7 +69,7 @@ class ShopifyShop extends Model
 	        return $subscription->valid();
 	    }
 
-	    return $subscription->valid() && $subscription->shopify_plan === $plan;
+	    return $subscription->valid() && $subscription->plan === $plan;
 	}
 
 	/**
