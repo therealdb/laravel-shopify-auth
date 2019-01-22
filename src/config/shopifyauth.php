@@ -87,6 +87,23 @@ return [
 
 	/*
     |--------------------------------------------------------------------------
+    | Uninstall Jobs
+    |--------------------------------------------------------------------------
+    |
+    | These are jobs that need to be run once the user has removed the app
+    |
+    */
+	'uninstall_jobs' => [
+		/*
+		[
+			'job' => \App\Jobs\MyJob::class, // replace with your job class
+			'dispatch' => true // false=run immediately | true=run as normal job
+		]
+		*/
+	],
+
+	/*
+    |--------------------------------------------------------------------------
     | Webhooks
     |--------------------------------------------------------------------------
     |

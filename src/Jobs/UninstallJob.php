@@ -76,6 +76,28 @@ class UninstallJob implements ShouldQueue
                 $this->shop->delete();
             }
 
+            $config = config('shopifyauth.uninstall_jobs');
+        
+            if (is_array($config)) {
+                $shop = $this->shop;
+                $run = function($config) use ($shop) {
+                    $job = new $config['job']($shop);
+                    if (isset($config['dispatch']) && $config['dispatch'] === true) {
+                        dispatch($job);
+                    } else {
+                        $job->handle();
+                    }
+
+                    return true;
+                };
+
+                if (count($config) > 0) {
+                    foreach ($config as $job) {
+                        $run($job);
+                    }
+                }
+            }
+
             return true;
         }
 
