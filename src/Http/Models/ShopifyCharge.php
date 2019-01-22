@@ -32,7 +32,7 @@ class ShopifyCharge extends Model
      *
      * @var array
      */
-    protected $fillable = ['shopify_shop_id', 'charge_id', 'name', 'plan', 'quantity', 'charge_type', 'trial_ends_at', 'ends_at'];
+    protected $fillable = ['shopify_shop_id', 'charge_id', 'name', 'plan', 'plan_id', 'quantity', 'charge_type', 'trial_ends_at', 'ends_at'];
 
     /**
      * Gets the shop for the charge.

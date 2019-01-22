@@ -107,11 +107,15 @@ Route::group(['middleware' => ['web']], function () {
 	    }
 	    $response = array_get($activated->getActivated(), 'recurring_application_charge');
 
+	    $plan = \TheRealDb\ShopifyAuth\Http\Models\ShopifyPlan::where('name', array_get($response, 'name'))
+	    	->first();
+
 	    \TheRealDb\ShopifyAuth\Http\Models\ShopifyCharge::create([
 	        'shopify_shop_id' => $store->id,
 	        'name' => 'default',
 	        'charge_id' => $request->get('charge_id'),
 	        'plan' => array_get($response, 'name'),
+	        'plan_id' => $plan->id,
 	        'quantity' => 1,
 	        'charge_type' => \TheRealDb\ShopifyAuth\Http\Models\ShopifyCharge::CHARGE_RECURRING,
 	        'test' => array_get($response, 'test'),
