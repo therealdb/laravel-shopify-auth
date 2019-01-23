@@ -14,9 +14,9 @@ class CreateShopifyChargesForeignKeyTable extends Migration
     public function up()
     {
         Schema::table('shopify_charges', function (Blueprint $table) {
-            $table->foreign('shopify_shop_id')
+            $table->foreign('plan_id')
                 ->references('id')
-                ->on('shopify_shops');
+                ->on('shopify_plans');
         });
     }
 
@@ -29,7 +29,7 @@ class CreateShopifyChargesForeignKeyTable extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::table('shopify_charges', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
+            $table->dropForeign(['plan_id']);
         });
         Schema::enableForeignKeyConstraints();
     }
