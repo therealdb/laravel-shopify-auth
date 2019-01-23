@@ -48,10 +48,6 @@ class CreateShopifyChargesTable extends Migration
             $table->foreign('shopify_shop_id')
                 ->references('id')
                 ->on('shopify_shops');
-
-            $table->foreign('plan_id')
-                ->references('id')
-                ->on('shopify_plans');
         });
     }
 
