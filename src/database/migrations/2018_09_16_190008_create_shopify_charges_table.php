@@ -34,7 +34,7 @@ class CreateShopifyChargesTable extends Migration
             $table->string('charge_id');
             $table->string('name');
             $table->string('plan');
-            $table->string('plan_id');
+            $table->unsignedInteger('plan_id');
             $table->string('test')
                 ->nullable();
             $table->integer('quantity');
